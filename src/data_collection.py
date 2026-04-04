@@ -14,5 +14,25 @@ def test_connection():
     else:
         print("Failed", response.status_code)
 
+
+def get_lead_text(title):
+    url = f"https://en.wikipedia.org/api/rest_v1/page/summary/{title}"
+    headers = {"User-Agent": "Mozilla/5.0"}
+    
+    response = requests.get(url, headers=headers)
+    
+    if response.status_code == 200:
+        data = response.json()
+        return data.get("extract")
+    else:
+        return None
+
+
+
+
+
+print(get_lead_text("Marie_Curie"))
+
+
 if __name__ == "__main__":
     test_connection()
