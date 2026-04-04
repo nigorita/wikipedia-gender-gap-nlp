@@ -1,6 +1,9 @@
 import pandas as pd
 import nltk
+import string
+
 from nltk.corpus import stopwords
+
 
 nltk.download("punkt")
 nltk.download('punkt_tab')
@@ -24,6 +27,10 @@ def remove_stopwords(df):
     df["tokens"] = df["tokens"].apply(lambda tokens: [word for word in tokens if word not in stop_words])
     return df
 
+def remove_punctuation(df):
+    df["tokens"] = df["tokens"].apply(lambda tokens: [word for word in tokens if word not in string.punctuation])
+    return df
+
 if __name__ == "__main__":
     df = load_data()
     print(df.head())
@@ -32,4 +39,6 @@ if __name__ == "__main__":
     df = tokenize_text(df)
     print(df.head())
     df = remove_stopwords(df)
+    print(df.head())
+    df = remove_punctuation(df)
     print(df.head())
