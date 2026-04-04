@@ -1,5 +1,7 @@
 import requests
+import pandas as pd
 from sample_names import male_names, female_names
+
 
 def test_connection():
     url = "https://en.wikipedia.org/api/rest_v1/page/summary/Albert_Einstein"
@@ -30,12 +32,19 @@ def get_lead_text(title):
 
 
 
-def fetch_samples():
+def fetch_and_save():
+    data = []
+
+    for name in male_names:
+        text = get_lead_text(name)
+        data.append({"name": name, "gender": "male", "text": text})
+
     for name in female_names:
         text = get_lead_text(name)
-        print("FEMALE:", name)
-        print(text)
-        print("-" * 50)
+        data.append({"name": name, "gender": "female", "text": text})
+
+    df = pd.DataFrame(data)
+    df.to_csv("data.csv", index=False)
 
 if __name__ == "__main__":
-    fetch_samples()
+    fetch_and_save()
