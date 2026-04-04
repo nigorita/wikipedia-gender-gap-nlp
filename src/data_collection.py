@@ -1,4 +1,5 @@
 import requests
+from sample_names import male_names, female_names
 
 def test_connection():
     url = "https://en.wikipedia.org/api/rest_v1/page/summary/Albert_Einstein"
@@ -29,10 +30,12 @@ def get_lead_text(title):
 
 
 
-
-
-print(get_lead_text("Marie_Curie"))
-
+def fetch_samples():
+    for name in female_names:
+        text = get_lead_text(name)
+        print("FEMALE:", name)
+        print(text)
+        print("-" * 50)
 
 if __name__ == "__main__":
-    test_connection()
+    fetch_samples()
