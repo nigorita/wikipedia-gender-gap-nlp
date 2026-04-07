@@ -1,6 +1,10 @@
 import requests
 import pandas as pd
-from sample_names import male_names, female_names
+
+try:
+    from generated_names import male_names, female_names
+except ImportError:
+    from sample_names import male_names, female_names
 
 
 def test_connection():
