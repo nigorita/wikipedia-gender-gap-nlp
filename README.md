@@ -43,9 +43,9 @@ Text is fetched from Wikipedia API and limited to biography sections.
 ## Run
 
 ```bash
-python main.py --mode adj
-python main.py --mode full
-python main.py --mode full_nosample
+python src/main.py --mode adj
+python src/main.py --mode full
+python src/main.py --mode full_nosample
 ```
 
 ---
