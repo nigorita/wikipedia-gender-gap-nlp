@@ -1,0 +1,2 @@
+model,representation,cleaning,text_scope,classifier,ablated_features,folds,accuracy_mean,accuracy_std,precision_macro_mean,precision_macro_std,recall_macro_mean,recall_macro_std,macro_f1_mean,macro_f1_std
+tfidf_unigram_bigram_svm_basic_full_text_ablated,tfidf_unigram_bigram,basic,full_text,svm,40,5,0.8920634920634919,0.021248508610389228,0.899377130437502,0.01353230300143488,0.8928104575163399,0.019948029362133118,0.8915417419142576,0.02183046091848294

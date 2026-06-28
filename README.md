@@ -1,65 +1,82 @@
-# Wikipedia Gender Bias NLP Project
+# Wikipedia Gender Gap NLP - Phase 2
 
-## Overview
+## Überblick
 
-Analyze gender bias in Wikipedia biographies using NLP and machine learning.
+Dieses Projekt untersucht mögliche sprachliche Unterschiede zwischen weiblichen und männlichen Wikipedia-Biografien aus dem STEM-/Mathematikbereich.
 
----
+Phase 1 enthielt bereits eine Baseline mit bereinigten Biografietexten, TF-IDF und Logistic Regression. Phase 2 erweitert diese Basis durch zusätzliche Modellvergleiche und kritischere Analysen.
 
-## Data
+## Projektziel
 
-* Input: `data/manual_math_dataset.csv` (name, gender, field)
-* Output: `data/data_math.csv` (biography text)
+Das Ziel ist nicht nur eine möglichst hohe Klassifikationsleistung, sondern auch eine vorsichtige Interpretation der Ergebnisse:
 
-Text is fetched from Wikipedia API and limited to biography sections.
+- Welche Modelle klassifizieren weibliche vs. männliche Biografien am besten?
+- Wie stabil sind die Ergebnisse über mehrere Splits?
+- Wie stark hängen die Ergebnisse von Textlänge, Leakage-Wörtern oder einzelnen Features ab?
+- Liefert Sentence-BERT eine sinnvolle semantische Vergleichsbasis?
 
----
+## Wichtige Dateien
 
-## Preprocessing
+- `src/features.py`: Preprocessing, Basic Cleaning, Strict Cleaning und Hilfsfunktionen
+- `src/experiments.py`: Phase-2-Modellexperimente und Evaluation
+- `src/embeddings.py`: Sentence-BERT-Embeddings
+- `src/analysis.py`: Datenqualität, Textlängenanalyse und Leakage-Analyse
 
-* Remove names and gender words
-* Optional: sample 300 words
-* Clean text → `clean`
+## Methoden
 
----
+- TF-IDF Unigramme
+- TF-IDF Unigramme und Bigramme
+- Logistic Regression
+- Linear SVM
+- Sentence-BERT Embeddings mit Logistic Regression
+- 5-fold Cross-Validation
+- Feature Ablation
+- Textlängen-Kontrolle mit den ersten 300 Wörtern
 
-## Features
+## Outputs
 
-* **Adjectives** → extracted + filtered → `adj_features`
-* **Full text** → cleaned text → `full_features`
-* **Reference features**:
+Die wichtigsten Ergebnisse werden in `outputs/` gespeichert:
 
-  * `total_refs`, `words`, `ref_ratio`
+- `outputs/metrics/model_results.csv`
+- `outputs/metrics/cross_validation_results.csv`
+- `outputs/metrics/ablation_results.csv`
+- `outputs/metrics/phase2_results_presentation_view.xlsx`
+- `outputs/analysis/dataset_summary.csv`
+- `outputs/analysis/text_length_by_gender.csv`
+- `outputs/analysis/leakage_word_counts.csv`
+- `outputs/figures/`
 
----
+Die Excel-Datei `phase2_results_presentation_view.xlsx` fasst die wichtigsten Ergebnisse zusätzlich in einer präsentationsnahen Struktur zusammen:
 
-## Model
+- Experiment 1: lexikalische TF-IDF-Modelle
+- Experiment 2: Sentence-BERT
+- Experiment 3: Textlängen-Kontrolle
+- Experiment 4: Feature Ablation
 
-* TF-IDF + Logistic Regression
-* Train/test split: 80/20 (stratified)
+## Ausführung
 
----
-
-## Run
+Phase-1-Baseline:
 
 ```bash
-python main.py --mode adj
-python main.py --mode full
-python main.py --mode full_nosample
+python src/main.py --mode adj
+python src/main.py --mode full
+python src/main.py --mode full_nosample
 ```
 
----
+Phase-2-Experimente:
 
-## Output
+```bash
+python src/experiments.py
+```
 
-* Classification report (precision, recall, F1)
-* Top words:
+Hinweis: Dieser Schritt kann beim ersten Lauf länger dauern, weil Sentence-BERT geladen und Embeddings berechnet werden.
 
-  * negative → female
-  * positive → male
+Datenanalyse:
 
----
+```bash
+python src/analysis.py
+```
 
-## Goal
+## Interpretation
 
-Identify linguistic patterns that differ between male and female biographies.
+Die Ergebnisse werden nicht als direkter Beweis für Gender Bias interpretiert. Eine hohe Modellleistung kann auch durch Datenartefakte wie Textlänge, Wikipedia-Coverage, thematische Unterschiede oder verbleibende Leakage-Wörter beeinflusst werden.
