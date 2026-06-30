@@ -2,7 +2,7 @@
 
 Zuständig: Tugba
 
-Diese Datei vergleicht lexikalische und semantische Repräsentationen:
+Diese Datei ist der Hauptablauf für Phase 2. Sie vergleicht lexikalische und semantische Repräsentationen:
 - TF-IDF Unigramme / Bigramme
 - Logistic Regression / SVM
 - Sentence-BERT Embeddings aus embeddings.py als semantische Erweiterung
@@ -414,8 +414,7 @@ def run_feature_ablation(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def run_sbert_experiment(train_df: pd.DataFrame, test_df: pd.DataFrame) -> list[dict]:
-    # Sentence-BERT erzeugt semantische Embeddings.
-    # Danach wird ein einfacher Klassifikator auf diesen Embeddings trainiert.
+    # Sentence-BERT wird hier nur als Feature-Extractor verwendet. embeddings.py erzeugt die Vektoren, und hier wird Logistic Regression darauf trainiert.
     try:
         from embeddings import encode_with_sentence_bert
     except ImportError as exc:
@@ -488,7 +487,7 @@ def save_test_split_for_error_analysis(test_df: pd.DataFrame) -> None:
 
 
 def main() -> None:
-    # Hauptablauf: Daten laden, Experimente ausführen, Ergebnisse speichern.
+    # Hauptablauf der Phase-2-Experimente: Daten laden, Modelle ausführen und Ergebnisse speichern.
     ensure_output_dirs()
 
     df = load_clean_data()

@@ -7,11 +7,10 @@ from nltk import word_tokenize, pos_tag
 # Konstanten
 # ------------------------
 
-# Basic Gender-Wörter aus der Phase-1-Reinigung.
+# Direkte Gender-Hinweise für das Basic Cleaning.
 GENDER_WORDS = {"female", "male", "woman", "man", "she", "he", "her", "his"}
 
-# Strengere Liste für Phase 2.
-# Sie entfernt zusätzliche Gender- und Familienwörter, um Leakage zu reduzieren.
+# Strengere Liste für Phase 2. Sie enthält zusätzlich indirekte Gender-Hinweise, zum Beispiel Familienbegriffe.
 STRICT_GENDER_WORDS = GENDER_WORDS | {
     "women",
     "men",
@@ -100,13 +99,13 @@ def remove_gender_words_strict(text):
 
 
 def clean_basic(text, names):
-    # Komplette Basic-Cleaning-Funktion für die Experimente.
+    # Basic Cleaning kombiniert Namensentfernung und direkte Gender-Wörter.
     text = remove_names(text, names)
     return remove_gender_words(text)
 
 
 def clean_strict(text, names):
-    # Komplette Strict-Cleaning-Funktion für die Phase-2-Vergleiche.
+    # Strict Cleaning kombiniert Namensentfernung und die strengere Leakage-Liste.
     text = remove_names(text, names)
     return remove_gender_words_strict(text)
 

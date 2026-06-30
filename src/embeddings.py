@@ -2,14 +2,12 @@
 
 Zuständig: Tugba
 
-Diese Datei ist bewusst klein gehalten. Sie kann aus experiments.py verwendet
-werden, sobald das Paket sentence-transformers installiert ist.
+Diese Datei enthält nur den Sentence-BERT-Teil. experiments.py ruft diese Funktion auf, wenn semantische Embeddings gebraucht werden.
 """
 
 
 def encode_with_sentence_bert(texts, model_name="all-MiniLM-L6-v2"):
-    # Lädt Sentence-BERT nur dann, wenn diese Funktion wirklich verwendet wird.
-    # So bleiben die normalen TF-IDF-Experimente unabhängig von SBERT.
+    # Lädt Sentence-BERT erst hier. So bleiben die TF-IDF-Experimente unabhängig von dieser zusätzlichen Bibliothek.
     try:
         from sentence_transformers import SentenceTransformer
     except ImportError as exc:
@@ -17,11 +15,10 @@ def encode_with_sentence_bert(texts, model_name="all-MiniLM-L6-v2"):
             "Bitte sentence-transformers installieren, bevor SBERT-Experimente ausgeführt werden."
         ) from exc
 
-    # all-MiniLM-L6-v2 ist ein kleines, schnelles Sentence-BERT-Modell.
+    # all-MiniLM-L6-v2 ist ein kleines vortrainiertes Sentence-BERT-Modell.
     model = SentenceTransformer(model_name)
 
-    # Jeder Biografietext wird in einen numerischen Bedeutungsvektor umgewandelt.
-    # Diese Embeddings können danach mit Logistic Regression klassifiziert werden.
+    # Jeder Biografietext wird in einen Bedeutungsvektor umgewandelt. experiments.py nutzt diese Vektoren danach für Logistic Regression.
     return model.encode(
         list(texts),
         show_progress_bar=True,
